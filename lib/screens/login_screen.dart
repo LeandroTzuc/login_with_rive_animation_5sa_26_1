@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart' show RiveAnimation;
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _login_screenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _login_screenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return const Scaffold(
+      //Evita que se quite espacio del nudge
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: RiveAnimation.asset ('animated_login_bear'))],),)
-    );
+            Expanded ( 
+              child: RiveAnimation.asset('assets/animated_login_bear.riv'),
 
-  
+            )
+          ],
+        ),
+      ),
+    ) ;
   }
 }
