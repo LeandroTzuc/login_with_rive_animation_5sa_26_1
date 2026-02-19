@@ -20,6 +20,27 @@ class _LoginScreenState extends State<LoginScreen> {
   SMITrigger? _trigSuccess;
   SMITrigger? _trigFail;
 
+ //1))Crear Variables para Focusmode
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  //2)) Listeners ()
+  @override
+  void initState() {
+    super.initState();
+    _emailFocusNode.addListener(() {
+      if (_emailFocusNode.hasFocus) {
+        //No tapes los ojos al ver email
+        if (_isHandsUp != null) {
+          _isHandsUp!.change(false);
+        }
+      }
+    });
+_passwordFocusNode.addListener(() {
+  // manos arriba en password
+  _isHandsUp?.change(_passwordFocusNode.hasFocus);
+});
+}
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
               //Para separacion
               const SizedBox(height: 10),
               TextField(
+                //3)asignar FocusNode al TextField
+                focusNode: _emailFocusNode,
                 onChanged: (value) {
                   if (_isHandsUp != null) {
                     //No tapes los ojos al ver email
-                    _isHandsUp!.change(false);
+                    //_isHandsUp!.change(false);
                   }
                   if (_isChecking == null) return;
                   //Activa  el modo chisme
@@ -79,6 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
+                //3)asignar FocusNode al TextField
+                focusNode: _passwordFocusNode,
                 onChanged: (value) {
                   if (_isHandsUp != null) {
                     //No modo chisme
@@ -86,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                   if (_isHandsUp == null) return;
                   //Arriba las manos
-                  _isHandsUp!.change(true);
+                  //_isHandsUp!.change(true);
                 },
 
                 obscureText: _obscureText,
@@ -115,5 +140,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  //1.4 liberarr memoria/recursos al salir de la pantalla
+  @override
+  void dispose() {
+    //4) Liberar los FocusNode para evitar fugas de memoria
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
   }
 }
